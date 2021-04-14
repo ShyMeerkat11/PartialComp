@@ -5,15 +5,9 @@
  *      Author: drew1
  */
 
-/*
- * timer500.c
- *
- *  Created on: Feb 9, 2021
- *      Author: drew1
- */
-
 #include "timer1000.h"
 #include "Task1_V2_Queue.h"
+#include "Servo_PWM_Queue.h"
 void timer1000Setup(void *arg0)
 {
     Timer_Handle timer1;
@@ -53,16 +47,22 @@ void timer1000Setup(void *arg0)
 
 void timerCallback1000(Timer_Handle myHandle, int_fast16_t status)
 {
-    static version2_t message;
-    message.sendMes = SEND_MESSAGE;
-    message.avgSensReadings = TIMER1000_SEND2;
-    message.messagesPerSecond = TIMER1000_SEND1;
-    message.totalNumMes = TIMER1000_SEND1;
-    sendTask1V2Message( &message );
-    static StatsMessage_t stats;
-    stats.type = STATS_SEND;
+    //static version2_t message
+    static Servo_PWM_Message message;
+    message.angle1 = -1;
+    message.angle2 = -1;
+    message.angle3 = -1;
+    message.hash = 0;
+    //message.sendMes = SEND_MESSAGE;
+    //message.avgSensReadings = TIMER1000_SEND2;
+    //message.messagesPerSecond = TIMER1000_SEND1;
+    //message.totalNumMes = TIMER1000_SEND1;
+    //sendTask1V2Message( &message );
+    //static StatsMessage_t stats;
+    //stats.type = STATS_SEND;
     dbgEvent( ENTER_TIMER500_CALLBACK );
-    sendStatsMessage( &stats );
+    //sendStatsMessage( &stats );
+    sendServoPWMMessage(&message);
 }
 
 

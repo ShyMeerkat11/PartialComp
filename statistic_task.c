@@ -26,7 +26,7 @@ void init_stats_thread( MQTTClient_Handle handle ) {
     priParam.sched_priority = PRIORITY;
     pthread_attr_setschedparam(&attrs, &priParam);
 
-    retc = pthread_create(&thread, &attrs, stats_task, NULL);
+    retc = pthread_create(&thread, &attrs, stats_task, NULL); // @suppress("Invalid arguments")
     if (retc != 0) {
         dbgEvent( FATAL_CHAIN_INIT );
     }

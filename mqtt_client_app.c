@@ -82,6 +82,8 @@
 #include <string.h>
 #include "Servo_PWM_Queue.h"
 #include "Servo_PWM_Task.h"
+#include "High_Level_Queue.h"
+#include "High_Level_Task.h"
 extern int32_t ti_net_SlNet_initConfig();
 
 #define APPLICATION_NAME         "MQTT client"
@@ -333,8 +335,8 @@ void pushButtonPublishHandler(uint_least8_t index)
     queueElement.event = APP_MQTT_PUBLISH;
     ret = mq_send(appQueue, (const char*)&queueElement, sizeof(struct msgQueue), 0);
     if(ret < 0){
-        LOG_ERROR("msg queue send error %d", ret);
-    }
+        LOG_ERROR("msg queue send error %d", ret); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved") // @suppress("Function cannot be resolved")
+    } // @suppress("Function cannot be resolved")
 }
 /*
 void pushButtonConnectionHandler(uint_least8_t index)
@@ -387,8 +389,8 @@ void MQTT_EventCallback(int32_t event){
             dbgEvent( MQTT_CLIENT_EVENT_CB_CONNACK );
             deinit = 0;
             connected = 1;
-            LOG_INFO("MQTT_EVENT_CONNACK\r\n");
-            //GPIO_clearInt(CONFIG_GPIO_BUTTON_1);
+            LOG_INFO("MQTT_EVENT_CONNACK\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+            //GPIO_clearInt(CONFIG_GPIO_BUTTON_1); // @suppress("Function cannot be resolved")
             //GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
             break;
         }
@@ -396,28 +398,28 @@ void MQTT_EventCallback(int32_t event){
         case MQTT_EVENT_SUBACK:
         {
             dbgEvent( MQTT_CLIENT_EVENT_CB_SUBACK );
-            LOG_INFO("MQTT_EVENT_SUBACK\r\n");
-            break;
+            LOG_INFO("MQTT_EVENT_SUBACK\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+            break; // @suppress("Function cannot be resolved")
         }
 
         case MQTT_EVENT_PUBACK:
         {
             dbgEvent( MQTT_CLIENT_EVENT_CB_PUBACK );
-            LOG_INFO("MQTT_EVENT_PUBACK\r\n");
-            break;
+            LOG_INFO("MQTT_EVENT_PUBACK\r\n"); // @suppress("Invalid arguments") // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+            break; // @suppress("Function cannot be resolved")
         }
 
         case MQTT_EVENT_UNSUBACK:
         {
-            LOG_INFO("MQTT_EVENT_UNSUBACK\r\n");
-            break;
+            LOG_INFO("MQTT_EVENT_UNSUBACK\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+            break; // @suppress("Function cannot be resolved")
         }
 
         case MQTT_EVENT_CLIENT_DISCONNECT:
         {
             connected = 0;
-            LOG_INFO("MQTT_EVENT_CLIENT_DISCONNECT\r\n");
-            if(deinit == 0){
+            LOG_INFO("MQTT_EVENT_CLIENT_DISCONNECT\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved") // @suppress("Function cannot be resolved")
+            if(deinit == 0){ // @suppress("Function cannot be resolved")
                 //GPIO_clearInt(CONFIG_GPIO_BUTTON_1);
                 //GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
             }
@@ -444,8 +446,8 @@ void MQTT_EventCallback(int32_t event){
 
         case MQTT_EVENT_DESTROY:
         {
-            LOG_INFO("MQTT_EVENT_DESTROY\r\n");
-            break;
+            LOG_INFO("MQTT_EVENT_DESTROY\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+            break; // @suppress("Function cannot be resolved")
         }
     }
 }
@@ -483,8 +485,8 @@ void SensorCB(char* topic, char* payload){
 
 void ChainCB( char* topic, char* payload ) {
     dbgEvent( CHAIN_CB_ENTER );
-    LOG_INFO("TOPIC: %s \t PAYLOAD: %s\r\n", topic, payload);
-    ChainMessage_t message;
+    LOG_INFO("TOPIC: %s \t PAYLOAD: %s\r\n", topic, payload); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    ChainMessage_t message; // @suppress("Function cannot be resolved") // @suppress("Function cannot be resolved")
 
     jsmn_parser parser;
     jsmntok_t tokens[9];
@@ -651,12 +653,12 @@ void DataSendCB(char* topic, char* payload) {
         }
         i++;
     }
-    LOG_TRACE("Average = %d \r\n", message.avgSensReadings);
-    LOG_TRACE("Count = %d \r\n", message.totalNumMes);
-    LOG_TRACE("Value = %d \r\n", message.value);
-    LOG_TRACE("Time = %d \r\n", message.time);
-    LOG_TRACE("Hash = %u \r\n", message.hash);
-    message.messagesPerSecond = numData;
+    LOG_TRACE("Average = %d \r\n", message.avgSensReadings); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    LOG_TRACE("Count = %d \r\n", message.totalNumMes); // @suppress("Function cannot be resolved") // @suppress("Invalid arguments")
+    LOG_TRACE("Value = %d \r\n", message.value); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    LOG_TRACE("Time = %d \r\n", message.time); // @suppress("Function cannot be resolved") // @suppress("Function cannot be resolved") // @suppress("Invalid arguments")
+    LOG_TRACE("Hash = %u \r\n", message.hash); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    message.messagesPerSecond = numData; // @suppress("Function cannot be resolved")
     message.sendMes = 0;
 
     dbgEvent( CHAIN_CB_SEND );
@@ -729,12 +731,75 @@ void anglesCB(char* topic, char* payload) {
         }
         i++;
     }
-    LOG_TRACE("A1 = %d \r\n", message.angle1);
-    LOG_TRACE("A2 = %d \r\n", message.angle2);
-    LOG_TRACE("A3 = %d \r\n", message.angle3);
-    LOG_TRACE("Hash = %u \r\n", message.hash);
+    //LOG_TRACE("A1 = %d \r\n", message.angle1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    //LOG_TRACE("A2 = %d \r\n", message.angle2); // @suppress("Function cannot be resolved") // @suppress("Invalid arguments")
+    //LOG_TRACE("A3 = %d \r\n", message.angle3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    //LOG_TRACE("Hash = %u \r\n", message.hash); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
     //dbgEvent( CHAIN_CB_SEND );
     sendServoPWMMessage( &message );
+    dbgEvent( CHAIN_CB_SUCCESS );
+}
+void angleAndDistanceCB(char* topic, char* payload) {
+    dbgEvent( CHAIN_CB_ENTER );
+    highLevelMessage message;
+    //static int numData = 0;
+    //message.avgSensReadings = AVG_ERROR;
+    static jsmn_parser parser;
+    static jsmntok_t tokens[7];
+    jsmn_init(&parser);
+    jsmn_parse(&parser, payload, strlen(payload), tokens, 7);
+    //numData++;
+    //LOG_TRACE("NumData = %d \r\n", numData);
+    //char string[300];
+
+    int i = 1;
+    char string[300];
+    int j = 0;
+    int k;
+    char *ptr;
+    //while( i < tokens[0].size ) {
+    while( i < 2*tokens[0].size + 1 ) {
+        if( payload[tokens[i].start] == 'A' && tokens[i].type == JSMN_STRING) {
+            i++;
+            j = 0;
+            for( k = tokens[i].start ; k < tokens[i].end ; k++ ) {
+                string[j] = payload[k];
+                j++;
+            }
+            string[j] = 0;
+            message.angle = atoi( string );
+            //LOG_TRACE("String = %s \r\n", string);
+        }
+        if( payload[tokens[i].start] == 'D' && tokens[i].type == JSMN_STRING) {
+            i++;
+            j = 0;
+            for( k = tokens[i].start ; k < tokens[i].end ; k++ ) {
+                string[j] = payload[k];
+                j++;
+            }
+            string[j] = 0;
+            message.distance = atoi( string );
+            //LOG_TRACE("String = %s \r\n", string);
+        }
+        if( payload[tokens[i].start] == 'D' && tokens[i].type == JSMN_STRING) {
+            i++;
+            j = 0;
+            for( k = tokens[i].start ; k < tokens[i].end ; k++ ) {
+                string[j] = payload[k];
+                j++;
+            }
+            string[j] = 0;
+            message.done = atoi( string );
+            //LOG_TRACE("String = %s \r\n", string);
+        }
+        i++;
+    }
+    //LOG_TRACE("A1 = %d \r\n", message.angle1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    //LOG_TRACE("A2 = %d \r\n", message.angle2); // @suppress("Function cannot be resolved") // @suppress("Invalid arguments")
+    //LOG_TRACE("A3 = %d \r\n", message.angle3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    //LOG_TRACE("Hash = %u \r\n", message.hash); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    //dbgEvent( CHAIN_CB_SEND );
+    sendHighLevelMessage( &message );
     dbgEvent( CHAIN_CB_SUCCESS );
 }
 int32_t DisplayAppBanner(char* appName, char* appVersion){
@@ -791,7 +856,8 @@ int WifiInit(){
     ret |= pthread_attr_setdetachstate(&pattrs_spawn, PTHREAD_CREATE_DETACHED);
     ret = pthread_create(&spawn_thread, &pattrs_spawn, sl_Task, NULL);
     if(ret != 0){
-        LOG_ERROR("could not create simplelink task\n\r");
+
+; // @suppress("Invalid arguments")
         while(1);
     }
 
@@ -801,8 +867,8 @@ int WifiInit(){
 
     ret = Network_IF_InitDriver(ROLE_STA);
     if(ret < 0){
-        LOG_ERROR("Failed to start SimpleLink Device\n\r");
-        while(1);
+        LOG_ERROR("Failed to start SimpleLink Device\n\r"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+        while(1); // @suppress("Function cannot be resolved")
     }
 
     DisplayAppBanner(APPLICATION_NAME, APPLICATION_VERSION);
@@ -817,13 +883,13 @@ int WifiInit(){
 
     ret = Timer_start(timer0);
     if(ret < 0){
-        LOG_ERROR("failed to start the timer\r\n");
-    }
+        LOG_ERROR("failed to start the timer\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    } // @suppress("Function cannot be resolved")
 
     ret = Network_IF_ConnectAP(SSID_NAME, security_params);
     if(ret < 0){
-        LOG_ERROR("Connection to an AP failed\n\r");
-    }
+        LOG_ERROR("Connection to an AP failed\n\r"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    } // @suppress("Function cannot be resolved")
     else{
 
         SlWlanSecParams_t securityParams;
@@ -834,11 +900,11 @@ int WifiInit(){
 
         ret = sl_WlanProfileAdd((signed char*)SSID_NAME, strlen(SSID_NAME), 0, &securityParams, NULL, 7, 0);
         if(ret < 0){
-            LOG_ERROR("failed to add profile %s\r\n", SSID_NAME);
-        }
+            LOG_ERROR("failed to add profile %s\r\n", SSID_NAME); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+        } // @suppress("Function cannot be resolved")
         else{
-            LOG_INFO("profile added %s\r\n", SSID_NAME);
-        }
+            LOG_INFO("profile added %s\r\n", SSID_NAME); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+        } // @suppress("Function cannot be resolved")
     }
 
     Timer_stop(timer0);
@@ -867,8 +933,8 @@ void mainThread(void * args){
     ret = ti_net_SlNet_initConfig();
     if(0 != ret)
     {
-        LOG_ERROR("Failed to initialize SlNetSock\n\r");
-    }
+        LOG_ERROR("Failed to initialize SlNetSock\n\r"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    } // @suppress("Function cannot be resolved")
     //GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_OFF);
     //GPIO_write(CONFIG_GPIO_LED_1, CONFIG_GPIO_LED_OFF);
     //GPIO_write(CONFIG_GPIO_LED_2, CONFIG_GPIO_LED_OFF);
@@ -886,8 +952,8 @@ void mainThread(void * args){
 
     timer0 = Timer_open(CONFIG_TIMER_0, &params);
     if (timer0 == NULL) {
-        LOG_ERROR("failed to initialize timer\r\n");
-        dbgEvent( FATAL_TIMER );
+        LOG_ERROR("failed to initialize timer\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+        dbgEvent( FATAL_TIMER ); // @suppress("Function cannot be resolved") // @suppress("Function cannot be resolved")
     }
 
     attr.mq_maxmsg = 10;
@@ -913,8 +979,8 @@ void mainThread(void * args){
 
     timer0 = Timer_open(CONFIG_TIMER_0, &params);
     if (timer0 == NULL) {
-        LOG_ERROR("failed to initialize timer\r\n");
-        while(1);
+        LOG_ERROR("failed to initialize timer\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+        while(1); // @suppress("Function cannot be resolved")
     }
 
 MQTT_DEMO:
@@ -945,13 +1011,14 @@ MQTT_DEMO:
     ret = MQTT_IF_Subscribe(mqttClientHandle, "cc32xx/IRDataSend", MQTT_QOS_0, DataSendCB);
     ret |= MQTT_IF_Subscribe( mqttClientHandle, "Chain/2", MQTT_QOS_0, ChainCB );
     ret |= MQTT_IF_Subscribe(mqttClientHandle, "Arm/angles", MQTT_QOS_0, anglesCB);
+    ret |= MQTT_IF_Subscribe(mqttClientHandle, "Arm/angleAndDistance", MQTT_QOS_0, angleAndDistanceCB);
     //Make sure topics and payloads are null terminated
     if(ret < 0){
         dbgEvent( FATAL_SUB );
     }
     else{
-        LOG_INFO("Subscribed to all topics successfully\r\n");
-    }
+        LOG_INFO("Subscribed to all topics successfully\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    } // @suppress("Function cannot be resolved")
 
     mqttClientHandle = MQTT_IF_Connect(mqttClientParams, mqttConnParams, MQTT_EventCallback);
     if(mqttClientHandle < 0){
@@ -967,6 +1034,7 @@ MQTT_DEMO:
     createStatsQueue();
     createChainQueue();
     createTask1V2Queue();
+    createHighLevelQueue();
     init_servo_PWM_thread(appQueue);
     init_stats_thread(appQueue);
     init_Task1_V2_thread(appQueue);
@@ -1032,12 +1100,12 @@ MQTT_DEMO:
 
             ret = mq_send(appQueue, (const char*)&queueElement, sizeof(struct msgQueue), 0);
             if(ret < 0){
-                LOG_ERROR("msg queue send error %d", ret);
-            }
+                LOG_ERROR("msg queue send error %d", ret); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+            } // @suppress("Function cannot be resolved")
         }
         else {
-            LOG_TRACE("QUEUE ELEMENT ERROR");
-        }
+            LOG_TRACE("QUEUE ELEMENT ERROR"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+        } // @suppress("Function cannot be resolved")
     }
 
     deinit = 1;
@@ -1046,8 +1114,8 @@ MQTT_DEMO:
     }
     MQTT_IF_Deinit();
 
-    LOG_INFO("looping the MQTT functionality of the example for demonstration purposes only\r\n");
-    sleep(2);
+    LOG_INFO("looping the MQTT functionality of the example for demonstration purposes only\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    sleep(2); // @suppress("Function cannot be resolved")
     goto MQTT_DEMO;
 }
 

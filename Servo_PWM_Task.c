@@ -36,7 +36,7 @@ void init_servo_PWM_thread( MQTTClient_Handle handle ) {
     priParam.sched_priority = PRIORITY;
     pthread_attr_setschedparam(&attrs, &priParam);
 
-    retc = pthread_create(&thread, &attrs, servo_PWM_task, NULL);
+    retc = pthread_create(&thread, &attrs, servo_PWM_task, NULL); // @suppress("Invalid arguments")
     if (retc != 0) {
         //fail
     }
@@ -76,7 +76,7 @@ void* servo_PWM_task() {
     int   dutyInc3 = INCREMENT;
 
     //Sleep time in microseconds
-    uint32_t   time = 40000;
+    //uint32_t   time = 40000;
     PWM_Handle pwm1 = NULL;
     PWM_Handle pwm2 = NULL;
     PWM_Handle pwm3 = NULL;
@@ -95,23 +95,23 @@ void* servo_PWM_task() {
     if (pwm1 == NULL) {
         // CONFIG_PWM_0 did not open
         while (1)
-            LOG_TRACE("PWM DIDN'T OPEN\r\n");
-    }
+            LOG_TRACE("PWM DIDN'T OPEN\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    } // @suppress("Function cannot be resolved")
     PWM_start(pwm1);
 
     pwm2 = PWM_open(CONFIG_PWM_1, &params);
     if (pwm2 == NULL) {
         // CONFIG_PWM_1 did not open
         while (1)
-            LOG_TRACE("PWM DIDN'T OPEN\r\n");
-    }
+            LOG_TRACE("PWM DIDN'T OPEN\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    } // @suppress("Function cannot be resolved")
     PWM_start(pwm2);
 
     pwm3 = PWM_open(CONFIG_PWM_2, &params);
     if (pwm3 == NULL) {
         // CONFIG_PWM_2 did not open
         while (1)
-            LOG_TRACE("PWM DIDN'T OPEN\r\n");
+            LOG_TRACE("PWM DIDN'T OPEN\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
     }
     PWM_start(pwm3);
     //LOG_TRACE("Before While Loop PWM Task\r\n");
@@ -129,12 +129,15 @@ void* servo_PWM_task() {
     return_size = snprintf( message_out.topic, TOPIC_STRING_LENGTH, "Arm/Status");
     message_out.topic[return_size] = 0;
     int viable;
-
+    static int numMoves = 0;
+    static int numNonViableMoves = 0;
+    static int messageEverySec = 0;
     static int i;
     while (1) {
+        readServoPWMMessage( &message );
+        messageEverySec++;
         if (armState == IDLE) {
-            readServoPWMMessage( &message );
-            LOG_TRACE("I read PWM message\r\n");
+            //LOG_TRACE("I read PWM message\r\n");
             angle1 = message.angle1;
             angle2 = message.angle2;
             angle3 = message.angle3;
@@ -143,37 +146,46 @@ void* servo_PWM_task() {
                 setDirections(angle1, angle2, angle3, &dutyInc1, &dutyInc2, &dutyInc3, duty1, duty2, duty3);
                 armState = MOVING;
                 viable = VIABLE;
+                numMoves++;
             }
-            else
-            {
+            else if(angle1 != -1 && angle2 != -1 && angle3 != -1) {
                 //Send message saying unviable angles
-                LOG_TRACE("Not in range of motion \r\n");
+                //LOG_TRACE("Not in range of motion \r\n");
                 viable = NOT_VIABLE;
+                numNonViableMoves++;
+            }
+            else {
+                //send done message to the configuration task.
             }
         }
-        if(angle1 != duty1 && armState == MOVING) {
-            duty1 = duty1 + dutyInc1;
-            PWM_setDuty(pwm1, duty1);
+        else {
+            if(angle1 != duty1) {
+                duty1 = duty1 + dutyInc1;
+                PWM_setDuty(pwm1, duty1);
+            }
+            if(angle2 != duty2) {
+                duty2 = duty2 + dutyInc2;
+                PWM_setDuty(pwm2, duty2);
+            }
+            if(angle3 != duty3) {
+                duty3 = duty3 + dutyInc3;
+                PWM_setDuty(pwm3, duty3);
+            }
+            if(angle1 == duty1 &&angle2 == duty2 && angle3 == duty3) {
+                armState = IDLE;
+            }
         }
-        if(angle2 != duty2 && armState == MOVING) {
-            duty2 = duty2 + dutyInc2;
-            PWM_setDuty(pwm2, duty2);
+        //usleep(time);
+        if(messageEverySec == 25) {
+            return_size = snprintf( message_out.payload, PAYLOAD_STRING_LENGTH, "{ \"Moving\" : %d , \"Viable Instruction\" : %d , \"Number Moves\" : %d , \"Number Non-Viable Moves\" : %d }", armState, viable, numMoves, numNonViableMoves );
+            message_out.payload[return_size] = 0;
+            message_out.payload_size = return_size;
+            return_size = mq_send( QHandle, (char*)&message_out, sizeof(struct msgQueue), 0);
+            for( i = 0 ; i < PAYLOAD_STRING_LENGTH ; i++ ) {
+                        message_out.payload[i] = 0;
+            }
+            messageEverySec = 0;
         }
-        if(angle3 != duty3 && armState == MOVING) {
-            duty3 = duty3 + dutyInc3;
-            PWM_setDuty(pwm3, duty3);
-        }
-        if(angle1 == duty1 &&angle2 == duty2 && angle3 == duty3) {
-            armState = IDLE;
-        }
-        return_size = snprintf( message_out.payload, PAYLOAD_STRING_LENGTH, "{ \"Moving\" : %d , \"Viable Instruction\" : %d }", armState, viable );
-        message_out.payload[return_size] = 0;
-        message_out.payload_size = return_size;
-        return_size = mq_send( QHandle, (char*)&message_out, sizeof(struct msgQueue), 0);
-        for( i = 0 ; i < PAYLOAD_STRING_LENGTH ; i++ ) {
-                    message_out.payload[i] = 0;
-        }
-        usleep(time);
     }
 }
 void setDirections(int angle1, int angle2, int angle3, int *dutyInc1, int *dutyInc2, int *dutyInc3, uint16_t duty1, uint16_t duty2, uint16_t duty3) {

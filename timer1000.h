@@ -10,7 +10,7 @@
 #define TIMER1000_SEND2 -2
 #define TIMER1000_SEND1 -1
 #define SEND_MESSAGE 1
-#define TIMER1000_LENGTH 1000000
+#define TIMER1000_LENGTH 20000
 #include <stddef.h>
 #include "statistics_thread_queue.h"
 /* Driver Header files */

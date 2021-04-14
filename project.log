@@ -1,0 +1,48 @@
+
+
+!CONFIGURATION: 'Debug__opt_level__off' (com.ti.ccstudio.buildDefinitions.TMS470.Debug.2082493142__opt_level__off) [Wed Apr 14 02:18:28 EDT 2021]
+
+	!TOOL: 'Arm Compiler' (com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1253924745)
+
+		!NOTE: Deprecated build flag '--float_support=vfplib' was migrated to '--float_support=none'.
+
+
+
+!CONFIGURATION: 'Debug__opt_level__0' (com.ti.ccstudio.buildDefinitions.TMS470.Debug.2082493142__opt_level__0) [Wed Apr 14 02:18:36 EDT 2021]
+
+	!TOOL: 'Arm Compiler' (com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1016176468)
+
+		!NOTE: Deprecated build flag '--float_support=vfplib' was migrated to '--float_support=none'.
+
+
+
+!CONFIGURATION: 'Debug__opt_level__1' (com.ti.ccstudio.buildDefinitions.TMS470.Debug.2082493142__opt_level__1) [Wed Apr 14 02:18:44 EDT 2021]
+
+	!TOOL: 'Arm Compiler' (com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1020471471)
+
+		!NOTE: Deprecated build flag '--float_support=vfplib' was migrated to '--float_support=none'.
+
+
+
+!CONFIGURATION: 'Debug__opt_level__2' (com.ti.ccstudio.buildDefinitions.TMS470.Debug.2082493142__opt_level__2) [Wed Apr 14 02:18:51 EDT 2021]
+
+	!TOOL: 'Arm Compiler' (com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1131487191)
+
+		!NOTE: Deprecated build flag '--float_support=vfplib' was migrated to '--float_support=none'.
+
+
+
+!CONFIGURATION: 'Debug__opt_level__3' (com.ti.ccstudio.buildDefinitions.TMS470.Debug.2082493142__opt_level__3) [Wed Apr 14 02:18:59 EDT 2021]
+
+	!TOOL: 'Arm Compiler' (com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.941281748)
+
+		!NOTE: Deprecated build flag '--float_support=vfplib' was migrated to '--float_support=none'.
+
+
+
+!CONFIGURATION: 'Debug__opt_level__4' (com.ti.ccstudio.buildDefinitions.TMS470.Debug.2082493142__opt_level__4) [Wed Apr 14 02:19:07 EDT 2021]
+
+	!TOOL: 'Arm Compiler' (com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1135263549)
+
+		!NOTE: Deprecated build flag '--float_support=vfplib' was migrated to '--float_support=none'.
+
