@@ -37,6 +37,6 @@
 #define TOPIC_STRING_LENGTH 50
 void init_servo_PWM_thread( mqd_t handle );
 void* servo_PWM_task();
-void setDirections(int angle1, int angle2, int angle3, int *dutyInc1, int *dutyInc2, int *dutyInc3, uint16_t duty1, uint16_t duty2, uint16_t duty3);
-bool checkViableAngles(int angle1, int angle2, int angle3);
+void setDirections(int angle1, int angle2, int angle3, int angle4, int *dutyInc1, int *dutyInc2, int *dutyInc3, int *dutyInc4, uint16_t duty1, uint16_t duty2, uint16_t duty3, uint16_t duty4);
+bool checkViableAngles(int angle1, int angle2, int angle3, int angle4);
 #endif /* SERVO_PWM_TASK_H_ */

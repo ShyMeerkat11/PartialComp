@@ -68,18 +68,20 @@ void* servo_PWM_task() {
     //}
     // Period and duty in microseconds
     uint16_t   pwmPeriod = 20000;
-    uint16_t   duty1 = 1600;
-    uint16_t   duty2 = 1000;
+    uint16_t   duty1 = 1550;
+    uint16_t   duty2 = 1300;
     uint16_t   duty3 = 2000;
+    uint16_t   duty4 = 900;
     int   dutyInc1 = INCREMENT;
     int   dutyInc2 = INCREMENT;
     int   dutyInc3 = INCREMENT;
-
+    int   dutyInc4 = INCREMENT;
     //Sleep time in microseconds
     //uint32_t   time = 40000;
     PWM_Handle pwm1 = NULL;
     PWM_Handle pwm2 = NULL;
     PWM_Handle pwm3 = NULL;
+    PWM_Handle pwm4 = NULL;
     PWM_Params params;
 
     // Call driver init functions.
@@ -114,15 +116,24 @@ void* servo_PWM_task() {
             LOG_TRACE("PWM DIDN'T OPEN\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
     }
     PWM_start(pwm3);
+
+    pwm4 = PWM_open(CONFIG_PWM_3, &params);
+    if (pwm4 == NULL) {
+        while(1)
+            LOG_TRACE("PWM DIDN'T OPEN\r\n"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    }
+    PWM_start(pwm4);
     //LOG_TRACE("Before While Loop PWM Task\r\n");
     // Loop forever incrementing the PWM duty
     int armState = IDLE;
-    int angle1;
-    int angle2;
-    int angle3;
+    int pwmAngle1;
+    int pwmAngle2;
+    int pwmAngle3;
+    int pwmAngle4;
     PWM_setDuty(pwm1, duty1);
     PWM_setDuty(pwm2, duty2);
     PWM_setDuty(pwm3, duty3);
+    PWM_setDuty(pwm4, duty4);
     static msgQueue message_out;
     static int return_size;
     message_out.event = 0;
@@ -137,19 +148,24 @@ void* servo_PWM_task() {
     while (1) {
         readServoPWMMessage( &message );
         messageEverySec++;
+//        LOG_TRACE("angle1 = %d \r\n", message.angle1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+//        LOG_TRACE("angle2 = %d \r\n", message.angle2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+//        LOG_TRACE("angle3 = %d \r\n", message.angle3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+//        LOG_TRACE("angle4 = %d \r\n", message.angle4); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
         if (armState == IDLE) {
             //LOG_TRACE("I read PWM message\r\n");
-            angle1 = message.angle1;
-            angle2 = message.angle2;
-            angle3 = message.angle3;
+            pwmAngle1 = (int)(((2100.0/180.0)*(float)message.angle1)+500);
+            pwmAngle2 = (int)(((800.0/68.57142857)*(float)message.angle2)+1300);
+            pwmAngle3 = (int)(((600.0/51.42857143)*(float)message.angle3)+1400);
+            pwmAngle4 = (int)(((800.0/68.57142857)*(float)message.angle4)+900);
 
-            if (checkViableAngles(angle1, angle2, angle3)) {
-                setDirections(angle1, angle2, angle3, &dutyInc1, &dutyInc2, &dutyInc3, duty1, duty2, duty3);
+            if (checkViableAngles(pwmAngle1, pwmAngle2, pwmAngle3, pwmAngle4)) {
+                setDirections(pwmAngle1, pwmAngle2, pwmAngle3, pwmAngle4, &dutyInc1, &dutyInc2, &dutyInc3, &dutyInc4, duty1, duty2, duty3, duty4);
                 armState = MOVING;
                 viable = VIABLE;
                 numMoves++;
             }
-            else if(angle1 != -1 && angle2 != -1 && angle3 != -1) {
+            else if(pwmAngle1 != -1 && pwmAngle2 != -1 && pwmAngle3 != -1 && pwmAngle4 != -1) {
                 //Send message saying unviable angles
                 //LOG_TRACE("Not in range of motion \r\n");
                 viable = NOT_VIABLE;
@@ -157,29 +173,43 @@ void* servo_PWM_task() {
             }
         }
         else {
-            if (angle1 <= duty1 + INCREMENT && angle1 >= duty1 - INCREMENT)
+            if (pwmAngle1 <= duty1 + INCREMENT && pwmAngle1 >= duty1 - INCREMENT)
             {
-                duty1 = angle1;
+                duty1 = pwmAngle1;
                 PWM_setDuty(pwm1, duty1);
             }
-            else if(angle1 != duty1) {
+            else if(pwmAngle1 != duty1) {
                 duty1 = duty1 + dutyInc1;
                 PWM_setDuty(pwm1, duty1);
             }
-            if (angle1 <= duty1 + INCREMENT && angle1 >= duty1 - INCREMENT)
+            if (pwmAngle2 <= duty2 + INCREMENT && pwmAngle2 >= duty2 - INCREMENT)
             {
-                duty2 = angle2;
+                duty2 = pwmAngle2;
                 PWM_setDuty(pwm2, duty2);
             }
-            else if(angle2 != duty2) {
+            else if(pwmAngle2 != duty2) {
                 duty2 = duty2 + dutyInc2;
                 PWM_setDuty(pwm2, duty2);
             }
-            if(angle3 != duty3) {
+            if (pwmAngle3 <= duty3 + INCREMENT && pwmAngle3 >= duty3 - INCREMENT)
+            {
+                duty3 = pwmAngle3;
+                PWM_setDuty(pwm3, duty3);
+            }
+            else if(pwmAngle3 != duty3) {
                 duty3 = duty3 + dutyInc3;
                 PWM_setDuty(pwm3, duty3);
             }
-            if(angle1 == duty1 &&angle2 == duty2 && angle3 == duty3) {
+            if (pwmAngle4 <= duty4 + INCREMENT && pwmAngle4>= duty4 - INCREMENT)
+            {
+                duty4 = pwmAngle4;
+                PWM_setDuty(pwm4, duty4);
+            }
+            else if(pwmAngle4 != duty4) {
+                duty4 = duty4 + dutyInc4;
+                PWM_setDuty(pwm4, duty4);
+            }
+            if(pwmAngle1 == duty1 &&pwmAngle2 == duty2 && pwmAngle3 == duty3 && pwmAngle4 == duty4) {
                 armState = IDLE;
                 //send done message to the high level task.
                 doneMessage.angle = -1;
@@ -204,7 +234,7 @@ void* servo_PWM_task() {
         }
     }
 }
-void setDirections(int angle1, int angle2, int angle3, int *dutyInc1, int *dutyInc2, int *dutyInc3, uint16_t duty1, uint16_t duty2, uint16_t duty3) {
+void setDirections(int angle1, int angle2, int angle3, int angle4, int *dutyInc1, int *dutyInc2, int *dutyInc3, int *dutyInc4, uint16_t duty1, uint16_t duty2, uint16_t duty3, uint16_t duty4) {
     if(angle1 > duty1) {
         *dutyInc1 = INCREMENT;
     }
@@ -223,14 +253,22 @@ void setDirections(int angle1, int angle2, int angle3, int *dutyInc1, int *dutyI
     else {
         *dutyInc3 = -INCREMENT;
     }
+    if(angle4 > duty4) {
+        *dutyInc4 = INCREMENT;
+    }
+    else {
+        *dutyInc4 = -INCREMENT;
+    }
 }
-bool checkViableAngles(int angle1, int angle2, int angle3) {
+bool checkViableAngles(int angle1, int angle2, int angle3, int angle4) {
     bool viable = true;
     if(angle1 > 2600 || angle1 < 500)
         viable = false;
-    if(angle2 > 2200 || angle2 < 1100)
+    else if(angle2 > 2100 || angle2 < 1300)
         viable = false;
-    if(angle3 > 2000 || angle3 < 1400)
+    else if(angle3 > 2000 || angle3 < 1400)
+        viable = false;
+    else if(angle4 > 1700 || angle4 < 900)
         viable = false;
     return viable;
 

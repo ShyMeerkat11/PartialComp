@@ -79,7 +79,7 @@ void* high_level_task() {
                     message_out.angle1 = pwm1;
                     message_out.angle2 = pwm2;
                     message_out.angle3 = pwm3;
-                    sendServoPWMMessage(&message_out);
+                    //sendServoPWMMessage(&message_out);
                     moveCount++;
                 }
             }
@@ -96,7 +96,7 @@ void* high_level_task() {
                 message_out.angle1 = pwm1;
                 message_out.angle2 = pwm2;
                 message_out.angle3 = pwm3;
-                sendServoPWMMessage(&message_out);
+                //sendServoPWMMessage(&message_out);
                 presetAng[0] = angle;
                 presetAng[1] = angle;
                 presetAng[2] = angle;

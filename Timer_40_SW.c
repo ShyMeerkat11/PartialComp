@@ -35,6 +35,7 @@
     message.angle1 = -1;
     message.angle2 = -1;
     message.angle3 = -1;
+    message.angle4 = -1;
     message.hash = 0;
     sendServoPWMMessage(&message);
    /* Store the incremented count back into the timer's ID field

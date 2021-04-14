@@ -29,12 +29,12 @@ const PWM            = scripting.addModule("/ti/drivers/PWM", {}, false);
 const PWM1           = PWM.addInstance();
 const PWM2           = PWM.addInstance();
 const PWM3           = PWM.addInstance();
+const PWM4           = PWM.addInstance();
 const Power          = scripting.addModule("/ti/drivers/Power");
 const SPI            = scripting.addModule("/ti/drivers/SPI");
 const SPI1           = SPI.addInstance();
 const Timer          = scripting.addModule("/ti/drivers/Timer");
 const Timer1         = Timer.addInstance();
-const Timer2         = Timer.addInstance();
 const Watchdog       = scripting.addModule("/ti/drivers/Watchdog");
 const Watchdog1      = Watchdog.addInstance();
 const SimpleLinkWifi = scripting.addModule("/ti/drivers/net/wifi/SimpleLinkWifi");
@@ -102,6 +102,8 @@ PWM3.$name         = "CONFIG_PWM_2";
 PWM3.$hardware     = system.deviceData.board.components.LED_YELLOW;
 PWM3.timer.$assign = "Timer3";
 
+PWM4.$name = "CONFIG_PWM_3";
+
 Power.ioRetentionShutdown = ["GRP_1"];
 Power.parkPins.$name      = "ti_drivers_power_PowerCC32XXPins0";
 
@@ -120,9 +122,6 @@ Timer1.$name         = "CONFIG_TIMER_0";
 Timer1.timerType     = "32 Bits";
 Timer1.timer.$assign = "Timer0";
 
-Timer2.$name     = "CONFIG_TIMER_1";
-Timer2.timerType = "32 Bits";
-
 Watchdog1.$name            = "CONFIG_WATCHDOG_0";
 Watchdog1.watchdog.$assign = "WATCHDOG0";
 
@@ -138,4 +137,5 @@ GPIO9.gpioPin.$suggestSolution     = "boosterpack.4";
 PWM1.timer.$suggestSolution        = "Timer3";
 PWM1.timer.pwmPin.$suggestSolution = "boosterpack.10";
 PWM3.timer.pwmPin.$suggestSolution = "boosterpack.9";
-Timer2.timer.$suggestSolution      = "Timer1";
+PWM4.timer.$suggestSolution        = "Timer1";
+PWM4.timer.pwmPin.$suggestSolution = "boosterpack.13";

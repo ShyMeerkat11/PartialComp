@@ -66,7 +66,6 @@
 ////////////////////////////////////////////////
 // MY STUFF
 #include "debug.h"
-#include "timer1000.h"
 #include "mqtt_publish_queue_def.h"
 #include "chain_task.h"
 #include "chain_thread_queue.h"
@@ -719,6 +718,17 @@ void anglesCB(char* topic, char* payload) {
             message.angle3 = atoi( string );
             //LOG_TRACE("String = %s \r\n", string);
         }
+        if( payload[tokens[i].start] == '4' && tokens[i].type == JSMN_STRING) {
+            i++;
+            j = 0;
+            for( k = tokens[i].start ; k < tokens[i].end ; k++ ) {
+                string[j] = payload[k];
+                j++;
+            }
+            string[j] = 0;
+            message.angle4 = atoi( string );
+            //LOG_TRACE("String = %s \r\n", string);
+        }
         if( payload[tokens[i].start] == 'H' && tokens[i].type == JSMN_STRING) {
             i++;
             j = 0;
@@ -1041,7 +1051,6 @@ MQTT_DEMO:
     init_stats_thread(appQueue);
     init_Task1_V2_thread(appQueue);
     init_chain_thread( appQueue );
-    timer1000Setup();
     swTimerSetup();
 
 
