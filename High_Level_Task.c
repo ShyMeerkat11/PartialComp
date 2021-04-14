@@ -72,6 +72,7 @@ void* high_level_task() {
                     //Cubic order Equation for Distance
                     pwm2 = (int)((16.18807*pow(presetDist[moveCount], 3.00))-(93.421923*pow(presetDist[moveCount], 2.00))+((270.10013*presetDist[moveCount])+1107.793747));
                     pwm3 = clawState[moveCount];
+                    LOG_TRACE("if for"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
                     LOG_TRACE("pwm1 = %d \r\n", pwm1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
                     LOG_TRACE("pwm2 = %d \r\n", pwm2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
                     LOG_TRACE("pwm3 = %d \r\n", pwm3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
@@ -88,8 +89,10 @@ void* high_level_task() {
                 //Cubic order Equation for Distance
                 pwm2 = (int)((16.18807*pow(distance, 3.00))-(93.421923*pow(distance, 2.00))+((270.10013*distance)+1107.793747));
                 pwm3 = OPEN_CLAW;
+                LOG_TRACE("ELSE"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
                 LOG_TRACE("pwm1 = %d \r\n", pwm1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
                 LOG_TRACE("pwm2 = %d \r\n", pwm2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                LOG_TRACE("pwm3 = %d \r\n", pwm3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
                 message_out.angle1 = pwm1;
                 message_out.angle2 = pwm2;
                 message_out.angle3 = pwm3;

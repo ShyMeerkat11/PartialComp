@@ -13,6 +13,7 @@ typedef struct Servo_PWM_Message {
     int angle1;
     int angle2;
     int angle3;
+    int angle4;
     unsigned int hash;
 } Servo_PWM_Message;
 //////////////////////////////////////////////////////////////////////////////////////////////

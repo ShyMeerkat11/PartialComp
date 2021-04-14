@@ -689,8 +689,8 @@ int MQTT_IF_Publish(MQTTClient_Handle mqttClientParams, char* topic, char* paylo
 {
     pthread_mutex_lock(&(mMQTTContext.moduleMutex));
     if(mMQTTContext.moduleState != MQTT_STATE_CONNECTED){
-        LOG_ERROR("not connected to broker\r\n");
-        pthread_mutex_unlock(&(mMQTTContext.moduleMutex));
+        LOG_ERROR("not connected to broker\r\n"); // @suppress("Invalid arguments")
+        pthread_mutex_unlock(&(mMQTTContext.moduleMutex)); // @suppress("Function cannot be resolved")
         return -1;
     }
     pthread_mutex_unlock(&(mMQTTContext.moduleMutex));

@@ -27,7 +27,7 @@ void timer1000Setup(void *arg0)
 
     timer1 = Timer_open(CONFIG_TIMER_1, &params);
 
-    if (timer1 == NULL) {
+    if (timer1 == 0) {
         /* Failed to initialized timer */
         while (1) {
             //Debug
@@ -48,11 +48,11 @@ void timer1000Setup(void *arg0)
 void timerCallback1000(Timer_Handle myHandle, int_fast16_t status)
 {
     //static version2_t message
-    static Servo_PWM_Message message;
-    message.angle1 = -1;
-    message.angle2 = -1;
-    message.angle3 = -1;
-    message.hash = 0;
+//    static Servo_PWM_Message message;
+//    message.angle1 = -1;
+//    message.angle2 = -1;
+//    message.angle3 = -1;
+//    message.hash = 0;
     //message.sendMes = SEND_MESSAGE;
     //message.avgSensReadings = TIMER1000_SEND2;
     //message.messagesPerSecond = TIMER1000_SEND1;
@@ -62,7 +62,7 @@ void timerCallback1000(Timer_Handle myHandle, int_fast16_t status)
     //stats.type = STATS_SEND;
     dbgEvent( ENTER_TIMER500_CALLBACK );
     //sendStatsMessage( &stats );
-    sendServoPWMMessage(&message);
+//    sendServoPWMMessage(&message);
 }
 
 

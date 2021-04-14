@@ -90,7 +90,7 @@ void* servo_PWM_task() {
     params.dutyValue = 0;
     params.periodUnits = PWM_PERIOD_US;
     params.periodValue = pwmPeriod;
-
+    params.idleLevel = PWM_IDLE_LOW;
     pwm1 = PWM_open(CONFIG_PWM_0, &params);
     if (pwm1 == NULL) {
         // CONFIG_PWM_0 did not open

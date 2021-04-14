@@ -84,6 +84,7 @@
 #include "Servo_PWM_Task.h"
 #include "High_Level_Queue.h"
 #include "High_Level_Task.h"
+#include "Timer_40_SW.h"
 extern int32_t ti_net_SlNet_initConfig();
 
 #define APPLICATION_NAME         "MQTT client"
@@ -1041,7 +1042,7 @@ MQTT_DEMO:
     init_Task1_V2_thread(appQueue);
     init_chain_thread( appQueue );
     timer1000Setup();
-
+    swTimerSetup();
 
 
 
