@@ -778,10 +778,10 @@ void angleAndDistanceCB(char* topic, char* payload) {
                 j++;
             }
             string[j] = 0;
-            message.distance = atoi( string );
+            message.distance = atof( string );
             //LOG_TRACE("String = %s \r\n", string);
         }
-        if( payload[tokens[i].start] == 'D' && tokens[i].type == JSMN_STRING) {
+        if( payload[tokens[i].start] == 'C' && tokens[i].type == JSMN_STRING) {
             i++;
             j = 0;
             for( k = tokens[i].start ; k < tokens[i].end ; k++ ) {
@@ -789,7 +789,7 @@ void angleAndDistanceCB(char* topic, char* payload) {
                 j++;
             }
             string[j] = 0;
-            message.done = atoi( string );
+            message.complete = atoi( string );
             //LOG_TRACE("String = %s \r\n", string);
         }
         i++;
@@ -1035,6 +1035,7 @@ MQTT_DEMO:
     createChainQueue();
     createTask1V2Queue();
     createHighLevelQueue();
+    init_high_level_thread(appQueue);
     init_servo_PWM_thread(appQueue);
     init_stats_thread(appQueue);
     init_Task1_V2_thread(appQueue);

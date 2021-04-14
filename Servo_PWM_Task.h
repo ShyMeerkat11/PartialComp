@@ -21,6 +21,7 @@
 #include <stdbool.h>
 #include "mqtt_publish_queue_def.h"
 #include <stdio.h>
+#include "High_Level_Queue.h"
 
 /* Driver Header files */
 #include <ti/drivers/PWM.h>

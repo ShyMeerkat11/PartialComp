@@ -7,7 +7,7 @@
 #include "Servo_PWM_Task.h"
 #define IDLE 0
 #define MOVING 1
-#define INCREMENT 50
+#define INCREMENT 25
 #define VIABLE 1
 #define NOT_VIABLE 0
 static mqd_t QHandle;
@@ -70,7 +70,7 @@ void* servo_PWM_task() {
     uint16_t   pwmPeriod = 20000;
     uint16_t   duty1 = 1600;
     uint16_t   duty2 = 1000;
-    uint16_t   duty3 = 1100;
+    uint16_t   duty3 = 2000;
     int   dutyInc1 = INCREMENT;
     int   dutyInc2 = INCREMENT;
     int   dutyInc3 = INCREMENT;
@@ -133,6 +133,7 @@ void* servo_PWM_task() {
     static int numNonViableMoves = 0;
     static int messageEverySec = 0;
     static int i;
+    static highLevelMessage doneMessage;
     while (1) {
         readServoPWMMessage( &message );
         messageEverySec++;
@@ -154,16 +155,23 @@ void* servo_PWM_task() {
                 viable = NOT_VIABLE;
                 numNonViableMoves++;
             }
-            else {
-                //send done message to the configuration task.
-            }
         }
         else {
-            if(angle1 != duty1) {
+            if (angle1 <= duty1 + INCREMENT && angle1 >= duty1 - INCREMENT)
+            {
+                duty1 = angle1;
+                PWM_setDuty(pwm1, duty1);
+            }
+            else if(angle1 != duty1) {
                 duty1 = duty1 + dutyInc1;
                 PWM_setDuty(pwm1, duty1);
             }
-            if(angle2 != duty2) {
+            if (angle1 <= duty1 + INCREMENT && angle1 >= duty1 - INCREMENT)
+            {
+                duty2 = angle2;
+                PWM_setDuty(pwm2, duty2);
+            }
+            else if(angle2 != duty2) {
                 duty2 = duty2 + dutyInc2;
                 PWM_setDuty(pwm2, duty2);
             }
@@ -173,10 +181,18 @@ void* servo_PWM_task() {
             }
             if(angle1 == duty1 &&angle2 == duty2 && angle3 == duty3) {
                 armState = IDLE;
+                //send done message to the high level task.
+                doneMessage.angle = -1;
+                doneMessage.complete = 1;
+                doneMessage.distance = -1;
+                sendHighLevelMessage(&doneMessage);
             }
         }
-        //usleep(time);
+
+
+
         if(messageEverySec == 25) {
+            //LOG_TRACE("Armsate = %d \r\n", armState); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
             return_size = snprintf( message_out.payload, PAYLOAD_STRING_LENGTH, "{ \"Moving\" : %d , \"Viable Instruction\" : %d , \"Number Moves\" : %d , \"Number Non-Viable Moves\" : %d }", armState, viable, numMoves, numNonViableMoves );
             message_out.payload[return_size] = 0;
             message_out.payload_size = return_size;
@@ -210,11 +226,11 @@ void setDirections(int angle1, int angle2, int angle3, int *dutyInc1, int *dutyI
 }
 bool checkViableAngles(int angle1, int angle2, int angle3) {
     bool viable = true;
-    if(angle1 > 2250 || angle1 < 750)
+    if(angle1 > 2600 || angle1 < 500)
         viable = false;
-    if(angle2 > 2200 || angle2 < 1000)
+    if(angle2 > 2200 || angle2 < 1100)
         viable = false;
-    if(angle3 > 2000 || angle3 < 800)
+    if(angle3 > 2000 || angle3 < 1400)
         viable = false;
     return viable;
 

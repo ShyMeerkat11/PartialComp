@@ -77,8 +77,8 @@ typedef struct version2_t {
 
 typedef struct highLevelMessage {
     int angle;
-    int distance;
-    int done;
+    double distance;
+    int complete;
 } highLevelMessage;
 
 #define AVG_ERROR -2

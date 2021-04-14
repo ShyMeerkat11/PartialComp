@@ -16,13 +16,16 @@
 #include "mqueue.h"
 #include <unistd.h>
 #include <stddef.h>
-#include "Servo_PWM_Queue.h"
+#include "High_Level_Queue.h"
 #include "uart_term.h"
 #include "debug_if.h"
 #include <stdbool.h>
 #include "mqtt_publish_queue_def.h"
 #include <stdio.h>
-
+#include "Servo_PWM_Queue.h"
+#include <math.h>
+#define OPEN_CLAW 2000
+#define CLOSED_CLAW 1400
 #define PRIORITY 1
 #define HIGHLEVELTHREADSTACKSIZE 1024
 #define TOPIC_STRING_LENGTH 50
