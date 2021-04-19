@@ -26,6 +26,7 @@
 #include <math.h>
 #define OPEN_CLAW 2000
 #define CLOSED_CLAW 1400
+#define PI 3.14159265
 #define PRIORITY 1
 #define HIGHLEVELTHREADSTACKSIZE 1024
 #define TOPIC_STRING_LENGTH 50

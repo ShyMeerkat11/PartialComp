@@ -69,9 +69,9 @@ void* servo_PWM_task() {
     // Period and duty in microseconds
     uint16_t   pwmPeriod = 20000;
     uint16_t   duty1 = 1550;
-    uint16_t   duty2 = 1300;
-    uint16_t   duty3 = 2000;
-    uint16_t   duty4 = 900;
+    uint16_t   duty2 = 1400;
+    uint16_t   duty3 = 2400;
+    uint16_t   duty4 = 700;
     int   dutyInc1 = INCREMENT;
     int   dutyInc2 = INCREMENT;
     int   dutyInc3 = INCREMENT;
@@ -155,9 +155,9 @@ void* servo_PWM_task() {
         if (armState == IDLE) {
             //LOG_TRACE("I read PWM message\r\n");
             pwmAngle1 = (int)(((2100.0/180.0)*(float)message.angle1)+500);
-            pwmAngle2 = (int)(((800.0/68.57142857)*(float)message.angle2)+1300);
-            pwmAngle3 = (int)(((600.0/51.42857143)*(float)message.angle3)+1400);
-            pwmAngle4 = (int)(((800.0/68.57142857)*(float)message.angle4)+900);
+            pwmAngle2 = (int)((-(1000.00/90.00)*(float)message.angle2)+2400);
+            pwmAngle3 = (int)(((1000.00/90.00)*(float)message.angle3)+1400);
+            pwmAngle4 = (int)((-(1000.00/90.00)*(float)message.angle4)+1700);
 
             if (checkViableAngles(pwmAngle1, pwmAngle2, pwmAngle3, pwmAngle4)) {
                 setDirections(pwmAngle1, pwmAngle2, pwmAngle3, pwmAngle4, &dutyInc1, &dutyInc2, &dutyInc3, &dutyInc4, duty1, duty2, duty3, duty4);
@@ -214,8 +214,12 @@ void* servo_PWM_task() {
                 //send done message to the high level task.
                 doneMessage.angle = -1;
                 doneMessage.complete = 1;
-                doneMessage.distance = -1;
+                doneMessage.x = -1;
                 sendHighLevelMessage(&doneMessage);
+                LOG_TRACE("pwm1 = %d \r\n", duty1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                LOG_TRACE("pwm2 = %d \r\n", duty2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                LOG_TRACE("pwm3 = %d \r\n", duty3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                LOG_TRACE("pwm4 = %d \r\n", duty4); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
             }
         }
 
@@ -264,11 +268,11 @@ bool checkViableAngles(int angle1, int angle2, int angle3, int angle4) {
     bool viable = true;
     if(angle1 > 2600 || angle1 < 500)
         viable = false;
-    else if(angle2 > 2100 || angle2 < 1300)
+    else if(angle2 > 2400 || angle2 < 1400)
         viable = false;
-    else if(angle3 > 2000 || angle3 < 1400)
+    else if(angle3 > 2400 || angle3 < 1400)
         viable = false;
-    else if(angle4 > 1700 || angle4 < 900)
+    else if(angle4 > 1700 || angle4 < 700)
         viable = false;
     return viable;
 

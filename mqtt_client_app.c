@@ -781,7 +781,7 @@ void angleAndDistanceCB(char* topic, char* payload) {
             message.angle = atoi( string );
             //LOG_TRACE("String = %s \r\n", string);
         }
-        if( payload[tokens[i].start] == 'D' && tokens[i].type == JSMN_STRING) {
+        if( payload[tokens[i].start] == 'x' && tokens[i].type == JSMN_STRING) {
             i++;
             j = 0;
             for( k = tokens[i].start ; k < tokens[i].end ; k++ ) {
@@ -789,7 +789,18 @@ void angleAndDistanceCB(char* topic, char* payload) {
                 j++;
             }
             string[j] = 0;
-            message.distance = atof( string );
+            message.x = atof( string );
+            //LOG_TRACE("String = %s \r\n", string);
+        }
+        if( payload[tokens[i].start] == 'y' && tokens[i].type == JSMN_STRING) {
+            i++;
+            j = 0;
+            for( k = tokens[i].start ; k < tokens[i].end ; k++ ) {
+                string[j] = payload[k];
+                j++;
+            }
+            string[j] = 0;
+            message.y = atof( string );
             //LOG_TRACE("String = %s \r\n", string);
         }
         if( payload[tokens[i].start] == 'C' && tokens[i].type == JSMN_STRING) {

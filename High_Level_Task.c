@@ -48,63 +48,96 @@ void* high_level_task() {
     highLevelMessage message_in;
     Servo_PWM_Message message_out;
     static int angle;
-    static double distance;
+    static double x;
+    static double y;
     static int complete;
-    static int pwm1;
-    static int pwm2;
-    static int pwm3;
+    static double angle1;
+    static double angle2;
+    static double angle3;
+    static double angle4;
     static int moveCount = 0;
-    static int presetAng[6] = {0, 0, 0, 180, 180, 90};
-    static double presetDist[6]= {0, 0, 0.1, 0.1, 0.1, 0.1};
-    static int clawState[6] = {OPEN_CLAW, CLOSED_CLAW, CLOSED_CLAW, CLOSED_CLAW, OPEN_CLAW, OPEN_CLAW};
+    static double L1 = 3.375;
+    static double L2 = 3.375;
+    static double val = 180.0 / PI;
+    //static int presetAng[6] = {0, 0, 0, 180, 180, 90};
+    //static double presetDist[6]= {0, 0, 0.1, 0.1, 0.1, 0.1};
+    //static int clawState[6] = {OPEN_CLAW, CLOSED_CLAW, CLOSED_CLAW, CLOSED_CLAW, OPEN_CLAW, OPEN_CLAW};
     while (1) {
         readHighLevelMessage( &message_in );
         angle = message_in.angle;
-        distance = message_in.distance;
+        x = message_in.x;
+        y = message_in.y;
         complete = message_in.complete;
-        if((angle <= 180 && angle >= 0 && distance >= 0 && distance <= 5) || (angle == -1 && distance == -1 && complete == 1)) {
-            if(distance == -1 && angle == -1 && complete == 1) {
-                if(moveCount == 6) {
-                    moveCount = 0;
-                }
-                else {
-                    pwm1 = (int)(((2100.0/180.0)*(float)presetAng[moveCount])+500);
-                    //Cubic order Equation for Distance
-                    pwm2 = (int)((16.18807*pow(presetDist[moveCount], 3.00))-(93.421923*pow(presetDist[moveCount], 2.00))+((270.10013*presetDist[moveCount])+1107.793747));
-                    pwm3 = clawState[moveCount];
-                    LOG_TRACE("if for"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
-                    LOG_TRACE("pwm1 = %d \r\n", pwm1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
-                    LOG_TRACE("pwm2 = %d \r\n", pwm2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
-                    LOG_TRACE("pwm3 = %d \r\n", pwm3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
-                    message_out.angle1 = pwm1;
-                    message_out.angle2 = pwm2;
-                    message_out.angle3 = pwm3;
+        if((angle <= 180 && angle >= 0 && x >= 0 && x <= 6.7 && y >= -3.375 && y <=3.375) || (angle == -1 && x == -1 && complete == 1)) {
+            //if(x == -1 && angle == -1 && complete == 1) {
+                //if(moveCount == 6) {
+                //    moveCount = 0;
+                //}
+                //else {
+
+                    //LOG_TRACE("if for"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                    //LOG_TRACE("angle1 = %d \r\n", angle1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                    //LOG_TRACE("angle2 = %d \r\n", angle2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                    //LOG_TRACE("angle3 = %d \r\n", angle3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                    //LOG_TRACE("angle4 = %d \r\n", angle4); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                    //message_out.angle1 = angle1;
+                    //message_out.angle2 = angle2;
+                    //message_out.angle3 = angle3;
+                    //message_out.angle4 = angle4;
                     //sendServoPWMMessage(&message_out);
-                    moveCount++;
-                }
-            }
-            else {
+                    //moveCount++;
+                //}
+            //}
+            //else {
                 //First Order Equation for Angles
-                pwm1 = (int)(((2100.0/180.0)*(float)angle)+500);
-                //Cubic order Equation for Distance
-                pwm2 = (int)((16.18807*pow(distance, 3.00))-(93.421923*pow(distance, 2.00))+((270.10013*distance)+1107.793747));
-                pwm3 = OPEN_CLAW;
-                LOG_TRACE("ELSE"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
-                LOG_TRACE("pwm1 = %d \r\n", pwm1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
-                LOG_TRACE("pwm2 = %d \r\n", pwm2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
-                LOG_TRACE("pwm3 = %d \r\n", pwm3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
-                message_out.angle1 = pwm1;
-                message_out.angle2 = pwm2;
-                message_out.angle3 = pwm3;
-                //sendServoPWMMessage(&message_out);
-                presetAng[0] = angle;
-                presetAng[1] = angle;
-                presetAng[2] = angle;
-                presetDist[0] = distance;
-                presetDist[1] = distance;
+
+                //LOG_TRACE("ELSE"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                //LOG_TRACE("angle1 = %d \r\n", angle1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                //LOG_TRACE("angle2 = %d \r\n", angle2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                //LOG_TRACE("angle3 = %d \r\n", angle3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                //LOG_TRACE("angle4 = %d \r\n", angle4); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                angle1 = angle;
+                angle3 = 0.00;
+                if(x == 0 && y == 0) {
+                    angle2 = 90.00;
+                    angle4 = 90.00;
+                }
+                else{
+                   angle4 = atan2(x,y) - atan2((pow(x,2)+pow(y,2))/(2*L2), sqrt(pow(x,2)+pow(y,2)-pow(((pow(x,2)+pow(y,2))/(2*L2)),2)));
+                   angle2 = acos((x-(L2*cos(angle4)))/L1);
+                   angle2 = angle2*val;
+                   angle4 = angle4*val;
+                   if(angle2 > 90.00 || angle2 < 0.00 || angle4 > 90.00 || angle4 < 0.00) {
+                       angle4 = atan2(x,y) + atan2((pow(x,2)+pow(y,2))/(2*L2), sqrt(pow(x,2)+pow(y,2)-pow(((pow(x,2)+pow(y,2))/(2*L2)),2)));
+                       angle2 = acos((x-(L2*cos(angle4)))/L1);
+                       angle2 = angle2*val;
+                       angle4 = angle4*val;
+                   }
+                   if(x == y) {
+                      angle4 = atan2(x,y) - atan2((pow(x,2)+pow(y,2))/(2*L2), sqrt(pow(x,2)+pow(y,2)-pow(((pow(x,2)+pow(y,2))/(2*L2)),2)));
+                      angle2 = acos((x-(L2*cos(angle4)))/L1);
+                      angle2 = angle2*val;
+                      angle4 = angle4*val;
+                   }
+               }
+
+                message_out.angle1 = angle1;
+                message_out.angle2 = angle2;
+                message_out.angle3 = angle3;
+                message_out.angle4 = angle4;
+                LOG_TRACE("angle1 = %f \r\n", angle1); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                LOG_TRACE("angle2 = %f \r\n", angle2); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                LOG_TRACE("angle3 = %f \r\n", angle3); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                LOG_TRACE("angle4 = %f \r\n", angle4); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+                sendServoPWMMessage(&message_out);
+                //presetAng[0] = angle;
+                //presetAng[1] = angle;
+                //presetAng[2] = angle;
+                //presetDist[0] = x;
+                //presetDist[1] = x;
                 //Close Claw at Position
 
-            }
+            //}
         }
     }
 }

@@ -10,10 +10,10 @@ typedef enum eSensorState_t {
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Servo task
 typedef struct Servo_PWM_Message {
-    int angle1;
-    int angle2;
-    int angle3;
-    int angle4;
+    double angle1;
+    double angle2;
+    double angle3;
+    double angle4;
     unsigned int hash;
 } Servo_PWM_Message;
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,8 @@ typedef struct version2_t {
 
 typedef struct highLevelMessage {
     int angle;
-    double distance;
+    double x;
+    double y;
     int complete;
 } highLevelMessage;
 
