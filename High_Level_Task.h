@@ -24,8 +24,8 @@
 #include <stdio.h>
 #include "Servo_PWM_Queue.h"
 #include <math.h>
-#define OPEN_CLAW 2000
-#define CLOSED_CLAW 1400
+#define OPEN_CLAW 90
+#define CLOSED_CLAW 0
 #define PI 3.14159265
 #define PRIORITY 1
 #define HIGHLEVELTHREADSTACKSIZE 1024
