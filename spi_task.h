@@ -42,5 +42,5 @@
 #define TOPIC_STRING_LENGTH 50
 void init_spi_task_thread( mqd_t handle );
 void* spi_task();
-
+void convertData(highLevelMessage *message,  char *buffer);
 #endif /* SPI_TASK_H_ */
