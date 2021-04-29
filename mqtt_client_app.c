@@ -84,6 +84,8 @@
 #include "High_Level_Queue.h"
 #include "High_Level_Task.h"
 #include "Timer_40_SW.h"
+#include "spi_task.h"
+#include "Timer40Queue.h"
 extern int32_t ti_net_SlNet_initConfig();
 
 #define APPLICATION_NAME         "MQTT client"
@@ -1057,6 +1059,8 @@ MQTT_DEMO:
     createChainQueue();
     createTask1V2Queue();
     createHighLevelQueue();
+    createTimer40Queue();
+    init_spi_task_thread(appQueue);
     init_high_level_thread(appQueue);
     init_servo_PWM_thread(appQueue);
     init_stats_thread(appQueue);

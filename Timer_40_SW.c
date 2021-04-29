@@ -17,6 +17,7 @@
  of times the associated timer expires, and stop the timer once the
  timer has expired 10 times.  The count is saved as the ID of the
  timer. */
+static int numCount = 0;
  void vTimerCallback( TimerHandle_t xTimer )
  {
      uint32_t ulCount;
@@ -32,12 +33,24 @@
     ulMaxExpiryCountBeforeStopping yet. */
     ulCount++;
     static Servo_PWM_Message message;
+    static timer40Message message1;
+
     message.angle1 = -1;
     message.angle2 = -1;
     message.angle3 = -1;
     message.angle4 = -1;
     message.hash = 0;
+    message1.getCamData = 1;
+
     sendServoPWMMessage(&message);
+    //LOG_TRACE("40 ms"); // @suppress("Invalid arguments") // @suppress("Function cannot be resolved")
+    if(numCount == 25) {
+        sendTimer40Message(&message1);
+        numCount = 0;
+    }
+    else {
+        numCount++;
+    }
    /* Store the incremented count back into the timer's ID field
    so it can be read back again the next time this software timer
    expires. */

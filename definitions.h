@@ -1,6 +1,6 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
-
+#define NULL 0
 //////////////////////////////////////////////////////////////////////////////////////////////
 // SENSOR TASK
 typedef enum eSensorState_t {
@@ -82,7 +82,9 @@ typedef struct highLevelMessage {
     double y;
     int complete;
 } highLevelMessage;
-
+typedef struct timer40Message {
+    int getCamData;
+} timer40Message;
 #define AVG_ERROR -2
 #endif
 

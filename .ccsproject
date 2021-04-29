@@ -15,5 +15,5 @@
 	<templateProperties value="id=mqtt_client_CC3220SF_LAUNCHXL_freertos_ccs.projectspec.mqtt_client_CC3220SF_LAUNCHXL_freertos_ccs,buildProfile=release,isHybrid=true"/>
 	<origin value="C:/Users/addis/workspace_v10/mqtt"/>
 	<filesToOpen value=""/>
-	<isTargetManual value="false"/>
+	<isTargetManual value="true"/>
 </projectOptions>

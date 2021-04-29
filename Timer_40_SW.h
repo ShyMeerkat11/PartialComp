@@ -21,6 +21,7 @@
 #include "FreeRTOSConfig.h"
 #include "Servo_PWM_Queue.h"
 #include <ti/drivers/dpl/HwiP.h>
+#include "Timer40Queue.h"
 void vTimerCallback( TimerHandle_t xTimer );
 void swTimerSetup(void);
 #endif /* TIMER_40_SW_H_ */
